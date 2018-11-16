@@ -24,6 +24,34 @@
     from mall_user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="countByUsername" resultType="java.lang.Integer">
+    SELECT
+    COUNT(id)
+    FROM mall_user
+    WHERE username = #{username}
+  </select>
+  <select id="selectLogin" resultMap="BaseResultMap">
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM mall_user
+    WHERE username = #{username}
+    AND password = #{password}
+  </select>
+  <select id="countByEmail" resultType="java.lang.Integer">
+    SELECT COUNT(id)
+    FROM mall_user
+    WHERE email = #{email}
+  </select>
+  <select id="selectQuestion" resultMap="BaseResultMap">
+    SELECT question
+    FROM mall_user
+    WHERE username = #{username}
+  </select>
+  <select id="checkAnswer" resultType="java.lang.Integer">
+    SELECT COUNT(id)
+    FROM mall_user
+    WHERE username = #{username} AND question = #{question} AND answer = #{answer}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mall_user
     where id = #{id,jdbcType=INTEGER}

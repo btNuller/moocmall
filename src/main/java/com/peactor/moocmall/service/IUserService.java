@@ -1,6 +1,17 @@
 package com.peactor.moocmall.service;
 
+import com.peactor.moocmall.common.ServerResponse;
+import com.peactor.moocmall.pojo.User;
+
 public interface IUserService {
 
-    Object login(String username, String password);
+    ServerResponse<User> login(String username, String password);
+
+    ServerResponse<String> register(User user);
+
+    ServerResponse<String> checkValid(String str, String type);
+
+    ServerResponse<String> selectQuestion(String username);
+
+    ServerResponse<String> checkAnswer(String username, String question, String answer);
 }

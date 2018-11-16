@@ -1,9 +1,11 @@
 package com.peactor.moocmall.common;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
 import java.io.Serializable;
 
+//保证序列化json的时候,如果是null的对象,key也会消失
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class ServerResponse<T> implements Serializable {
 
@@ -59,5 +61,35 @@ public class ServerResponse<T> implements Serializable {
 
     public static <T> ServerResponse<T> error(int errorCode, String msg) {
         return new ServerResponse<>(errorCode, msg);
+    }
+
+    //使其不在JSON序列化结果当中
+    @JsonIgnore
+    public boolean isSuccess() {
+        return ResponseCode.SUCCESS.getCode() == this.status;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
     }
 }
