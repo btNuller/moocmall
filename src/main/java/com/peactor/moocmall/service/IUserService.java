@@ -75,4 +75,6 @@ public interface IUserService {
     boolean checkEmailOther(int id, String email);
 
     ServerResponse<User> getInfomation(Integer id);
+
+    ServerResponse checkAdminRole(User user);
 }
