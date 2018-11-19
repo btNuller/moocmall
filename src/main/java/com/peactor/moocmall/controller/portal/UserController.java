@@ -62,4 +62,43 @@ public class UserController {
     public ServerResponse<String> forgetCheckAnswer(String username, String question, String answer) {
         return iUserService.checkAnswer(username, question, answer);
     }
+
+    @RequestMapping(value = "/forget_reset_password.do")
+    public ServerResponse<String> forgetResetPassword(String username, String newPassword, String forgetToken) {
+        return iUserService.forgetResetPassword(username, newPassword, forgetToken);
+    }
+
+    @RequestMapping(value = "/reset_password.do")
+    public ServerResponse<String> resetPassword(HttpSession session, String oldPassword, String newPassword) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if(null == user) {
+            return ServerResponse.error("用户未登录");
+        }
+        return iUserService.resetPassword(user, oldPassword, newPassword);
+    }
+
+    @RequestMapping(value = "/update_infomation.do")
+    public ServerResponse<User> updateInfomation(HttpSession session, User user) {
+        User currentUser = (User) session.getAttribute(Const.CURRENT_USER);
+        if(null == currentUser) {
+            return ServerResponse.error("用户未登录");
+        }
+        user.setId(currentUser.getId());
+        user.setUsername(currentUser.getUsername());
+        ServerResponse<User> response = iUserService.updateInfomation(user);
+        if(response.isSuccess()) {
+            response.getData().setUsername(currentUser.getUsername());
+            session.setAttribute(Const.CURRENT_USER, response.getData());
+        }
+        return response;
+    }
+
+    @RequestMapping(value = "/get_infomation.do")
+    public ServerResponse<User> getInfomation(HttpSession session) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if(null == user) {
+            return ServerResponse.error(ResponseCode.NEED_LOGIN.getCode(), "请先登录");
+        }
+        return iUserService.getInfomation(user.getId());
+    }
 }

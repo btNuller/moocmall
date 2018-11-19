@@ -19,11 +19,17 @@ public interface UserMapper {
 
     int countByUsername(String username);
 
-    User selectLogin(@Param("username") String username,@Param("password") String password);
-
     int countByEmail(String email);
 
-    ServerResponse<String> selectQuestion(String username);
+    String selectQuestion(String username);
+
+    User selectLogin(@Param("username") String username,@Param("password") String password);
 
     int checkAnswer(@Param("username") String username, @Param("question") String question, @Param("answer") String answer);
+
+    int resetPassword(@Param("username") String username, @Param("password") String password);
+
+    int checkPassword(@Param("oldPassword") String oldPassword, @Param("id") Integer id);
+
+    int countByEmailOther(@Param("id") int id, @Param("email") String email);
 }

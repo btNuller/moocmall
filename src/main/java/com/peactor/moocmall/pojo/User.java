@@ -21,9 +21,9 @@ public class User {
 
     private Date createTime;
 
-    private Date updatedTime;
+    private Date updateTime;
 
-    public User(Integer id, String username, String email, String password, String phone, String question, String answer, Integer role, Date createTime, Date updatedTime) {
+    public User(Integer id, String username, String email, String password, String phone, String question, String answer, Integer role, Date createTime, Date updateTime) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -33,7 +33,7 @@ public class User {
         this.answer = answer;
         this.role = role;
         this.createTime = createTime;
-        this.updatedTime = updatedTime;
+        this.updateTime = updateTime;
     }
 
     public User() {
@@ -112,11 +112,11 @@ public class User {
         this.createTime = createTime;
     }
 
-    public Date getUpdatedTime() {
-        return updatedTime;
+    public Date getupdateTime() {
+        return updateTime;
     }
 
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
+    public void setupdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

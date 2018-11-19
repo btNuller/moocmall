@@ -12,11 +12,11 @@
       <arg column="answer" jdbcType="VARCHAR" javaType="java.lang.String" />
       <arg column="role" jdbcType="INTEGER" javaType="java.lang.Integer" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="updated_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, username, email, password, phone, question, answer, role, create_time, updated_time
+    id, username, email, password, phone, question, answer, role, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,7 +26,7 @@
   </select>
   <select id="countByUsername" resultType="java.lang.Integer">
     SELECT
-    COUNT(id)
+    COUNT(1)
     FROM mall_user
     WHERE username = #{username}
   </select>
@@ -38,7 +38,7 @@
     AND password = #{password}
   </select>
   <select id="countByEmail" resultType="java.lang.Integer">
-    SELECT COUNT(id)
+    SELECT COUNT(1)
     FROM mall_user
     WHERE email = #{email}
   </select>
@@ -48,9 +48,15 @@
     WHERE username = #{username}
   </select>
   <select id="checkAnswer" resultType="java.lang.Integer">
-    SELECT COUNT(id)
+    SELECT COUNT(1)
     FROM mall_user
     WHERE username = #{username} AND question = #{question} AND answer = #{answer}
+  </select>
+  <select id="checkPassword" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM mall_user WHERE id = #{id} WHERE password = #{password}
+  </select>
+  <select id="countByEmailOther" resultType="java.lang.Integer">
+    SELECT COUNT(1) FROM mall_user WHERE id != #{id} AND email = #{email}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
     delete from mall_user
@@ -60,7 +66,7 @@
     insert into mall_user (id, username, email, 
       password, phone, question, 
       answer, role, create_time, 
-      updated_time)
+      update_time)
     values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{question,jdbcType=VARCHAR}, 
       #{answer,jdbcType=VARCHAR}, #{role,jdbcType=INTEGER}, now(),
@@ -96,8 +102,8 @@
       <if test="createTime != null" >
         create_time,
       </if>
-      <if test="updatedTime != null" >
-        updated_time,
+      <if test="updateTime != null" >
+        update_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -128,7 +134,7 @@
       <if test="createTime != null" >
         now(),
       </if>
-      <if test="updatedTime != null" >
+      <if test="updateTime != null" >
         now(),
       </if>
     </trim>
@@ -160,7 +166,7 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="updatedTime != null" >
+      <if test="updateTime != null" >
         now(),
       </if>
     </set>
@@ -178,5 +184,8 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       now()
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="resetPassword">
+    UPDATE moocmall SET password = #{password} WHERE username = #{username}
   </update>
 </mapper>
